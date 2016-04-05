@@ -1,0 +1,24 @@
+# This file is managed by Puppet, any changes will be overwritten
+
+<% - @cfg.keys.sort.each do |key|
+  if @cfg[key].is_a?(Hash) -%>
+
+[<%= key.to_s %>]
+    <%- @cfg[key].keys.sort.each do |valkey| -%>
+<%= valkey.to_s %> = <%= @cfg[key][valkey] %>
+    <%- end -%>
+  <%- elsif @cfg[key].is_a?(Array) -%>
+    <%- @cfg[key].each do |index| -%>
+
+[[<%= key.to_s %>]]
+      <%- if @cfg[key][index].is_a?(Hash) -%>
+        <%- @cfg[key][index].keys.sort.each do |valkey| -%>
+  <%= valkey.to_s %> = <%= @cfg[key][index][valkey] %>
+        <%- end -%>
+      <%- end -%>
+    <%- end -%>
+  <%- else -%>
+
+<%= key.to_s %> = <%= @cfg[key] %>
+  <%- end -%>
+<%- end -%>
